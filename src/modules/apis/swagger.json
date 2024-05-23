@@ -1,0 +1,2291 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SHOP Apis",
+    "version": "1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "Authorization": {
+        "type": "apikey",
+        "name": "Authorization",
+        "scheme": "bearer",
+        "in": "header",
+        "description": "User Token For Authorization: Bearer [user_token] "
+      }
+    }
+  },
+  "tags": [
+    { "name": "Auth 🔐", "description": "All Authenticating Api Routes" },
+    { "name": "User 🙎‍♂️", "description": "All Users Api Routes" },
+    { "name": "Product", "description": "All Products Api Routes" },
+    { "name": "Comment", "description": "All Comments Api Routes" },
+    { "name": "Ticket", "description": "All Tickets Api Routes" },
+    { "name": "Discount", "description": "All Discount Api Routes" },
+    { "name": "Menu", "description": "All Notifications Api Routes" },
+    { "name": "Notification", "description": "All Menus Api Routes" },
+    { "name": "Contact", "description": "All Contact Api Routes" },
+    { "name": "Category", "description": "All Categories Api Routes" },
+    { "name": "Department", "description": "All Department Api Routes" },
+    { "name": "NewsLetter 📩", "description": "All Newsletters Api Routes" },
+    { "name": "Search", "description": "Search Api Router" }
+  ],
+
+  "paths": {
+    "/ticket": {
+      "post": {
+        "tags": ["Ticket"],
+        "summary": "Sent Ticket",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "departmentID": "66408ef5986b06da2f8d2f07",
+                  "departmentSubID": "664071fe0d06ff81ec589e96",
+                  "title": "گرونی",
+                  "body": "سلام چرا هزینه هاتون بالاس؟",
+                  "product": "663656d8041d0ab21f9c3e81"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "departmentSubID Or departmentID Or product Is Not Mongo ID ;("
+          },
+          "404": {
+            "description": "departmentSubID Or departmentID Or Product Not Found;("
+          },
+          "201": {
+            "description": "The Ticket Created ;)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Ticket"],
+        "summary": "Get ALl Tickets",
+        "security": [{ "Authorization": [] }],
+        "responses": {
+          "404": {
+            "description": "The Ticket List Is Empity"
+          },
+          "200": {
+            "description": "You Will See All Tickets List"
+          }
+        }
+      }
+    },
+    "/ticket/user": {
+      "get": {
+        "tags": ["Ticket"],
+        "summary": "Get ALl User Tickets",
+        "responses": {
+          "404": {
+            "description": "The UserTicket List Is Empity"
+          },
+          "200": {
+            "description": "You Will See All User Tickets List"
+          }
+        }
+      }
+    },
+    "/ticket/answer": {
+      "post": {
+        "tags": ["Ticket"],
+        "summary": "Answer Ticket",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "ticketID": "66408ef5986b06da2f8d2f07",
+                  "body": "سلام بزودی تخفیف میزاریم"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The TicketID Is Not Mongo ID ;("
+          },
+          "404": {
+            "description": "The Ticket Not Found From This ID ;("
+          },
+          "201": {
+            "description": "The Ticket Answered :)"
+          }
+        }
+      }
+    },
+    "/ticket/{id}/answer": {
+      "get": {
+        "tags": ["Ticket"],
+        "summary": "Get Answer Tickets",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Ticket Not Found From This ID ;("
+          },
+          "200": {
+            "description": "You Will Get Ticket Answer"
+          }
+        }
+      }
+    },
+    "/department": {
+      "post": {
+        "tags": ["Department"],
+        "summary": "Create Department",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "پشتیبانی"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The Contact Created ;)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Department"],
+        "summary": "See Departments",
+        "responses": {
+          "200": {
+            "description": "You Will See All Departments List"
+          },
+          "404": {
+            "description": "The Departments List Is Empity :("
+          }
+        }
+      },
+      "put": {
+        "tags": ["Department"],
+        "summary": "Edit Departments",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "پشتیبانی",
+                  "id": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The id Is Not Mongo ID"
+          },
+          "404": {
+            "description": "The Department Not Found"
+          },
+          "200": {
+            "description": "The Title Edited ;)"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Department"],
+        "summary": "Delete Departments",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The id Is Not Mongo ID"
+          },
+          "404": {
+            "description": "The Department Not Found"
+          },
+          "200": {
+            "description": "The Department Deleted ;)"
+          }
+        }
+      }
+    },
+    "department/sub": {
+      "get": {
+        "tags": ["Department"],
+        "summary": "Get DepartmentSub",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "departmentID": "66408ef5986b06da2f8d2f07"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The departmentID Is Not Mongo ID ;("
+          },
+          "404": {
+            "description": "The DepartmentSub Not Found From This ID ;("
+          },
+          "200": {
+            "description": "You Will See All Departments Sub List"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Department"],
+        "summary": "Create DepartmentSub",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "departmentID": "66408ef5986b06da2f8d2f07",
+                  "title": "پشتیبانی شلوار"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The departmentID Is Not Mongo ID ;("
+          },
+          "404": {
+            "description": "The DepartmentSub Not Found From This ID ;("
+          },
+          "200": {
+            "description": "The DepartmentSub Created ;)"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Department"],
+        "summary": "Edit Departments Sub",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "واحد مالی",
+                  "id": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The id Is Not Mongo ID"
+          },
+          "404": {
+            "description": "The Department Not Found"
+          },
+          "200": {
+            "description": "The Title Edited ;)"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Department"],
+        "summary": "Delete Departments",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The id Is Not Mongo ID"
+          },
+          "404": {
+            "description": "The Department Not Found"
+          },
+          "200": {
+            "description": "The Department Deleted ;)"
+          }
+        }
+      }
+    },
+    "/contact": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Create Contact Info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "mohsen bakhshi",
+                  "text": "hello how are u today",
+                  "phone": 989120263186,
+                  "email": "mhsn.bakhshi696@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The Contact Created ;)"
+          }
+        }
+      }
+    },
+    "/contact/all": {
+      "get": {
+        "tags": ["Contact"],
+        "summary": "Get All Contact List For Admin",
+        "security": [{ "Authorization": [] }],
+        "responses": {
+          "404": {
+            "description": "The Comtact List Is Empity ;("
+          },
+          "201": {
+            "description": "You Will Get All Contacts List"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Contact"],
+        "summary": "Delete All Contact List From Admin",
+        "security": [{ "Authorization": [] }],
+        "responses": {
+          "200": {
+            "description": "All Contacts List Deleted ;)"
+          }
+        }
+      }
+    },
+    "/contact/edit": {
+      "put": {
+        "tags": ["Contact"],
+        "summary": "Edit Contact Info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "Arezoo Moradi",
+                  "text": "hello",
+                  "phone": 989120263186,
+                  "email": "mhsn.bakhshi696@gmail.com",
+                  "id": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Contact Not Found ;("
+          },
+          "201": {
+            "description": "The Contact Info Edited ;)"
+          }
+        }
+      }
+    },
+    "/contact/answer/{id}": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Answer Contact",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "answer": "thank U",
+                  "subject": "subject or title of your message"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Contact Not Found ;("
+          },
+          "500": {
+            "description": "Server Error !!"
+          },
+          "200": {
+            "description": "Answer Sent To Email Of User ;)"
+          }
+        }
+      }
+    },
+    "/contact/one/{id}": {
+      "get": {
+        "tags": ["Contact"],
+        "summary": "Get One Contact",
+        "security": [{ "Authorization": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Contact Not Found ;("
+          },
+          "200": {
+            "description": "You Will Get Contact"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Contact"],
+        "summary": "Delete One Contact",
+        "security": [{ "Authorization": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Contact Not Found ;("
+          },
+          "200": {
+            "description": "The Contact Deleted ;)"
+          }
+        }
+      }
+    },
+    "/search/{keyword}": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "Show All Product => name or des or href like keyword",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found Anything To Show ;("
+          },
+          "200": {
+            "description": "You Will Get All Product List"
+          }
+        }
+      }
+    },
+    "/discount": {
+      "post": {
+        "tags": ["Discount"],
+        "summary": "Create Discount Code",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "code": "ksjalksj",
+                  "percent": "60",
+                  "product": "663656d8041d0ab21f9c3e7d",
+                  "max": 4
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The Product ID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Product Not Found ;("
+          },
+          "201": {
+            "description": "The Discount Code Created ;)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Discount"],
+        "summary": "Get All Discounts Code",
+        "security": [{ "Authorization": [] }],
+        "responses": {
+          "404": {
+            "description": "There Is No Notification ;("
+          },
+
+          "200": {
+            "description": "You Will Get All Discounts Code In Response ;)"
+          }
+        }
+      }
+    },
+    "/discount/edit/{discountID}": {
+      "put": {
+        "tags": ["Discount"],
+        "summary": "Edit Discount Code",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "code": "mwskjshewyu",
+                  "percent": "70",
+                  "max": 4
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "discountID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The discountID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Discount Not Found ;("
+          },
+          "200": {
+            "description": "The Discount Edited ;)"
+          }
+        }
+      }
+    },
+    "/discount/delete/{discountID}": {
+      "delete": {
+        "tags": ["Discount"],
+        "summary": "Delete Discount Code",
+        "security": [{ "Authorization": [] }],
+
+        "parameters": [
+          {
+            "name": "discountID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The discountID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Discount Not Found ;("
+          },
+          "200": {
+            "description": "The Discount Deleted ;)"
+          }
+        }
+      }
+    },
+    "/discount/one/{productID}": {
+      "put": {
+        "tags": ["Discount"],
+        "summary": "Set One Discount Code One One Product",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "discount": 60
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The productID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Product Not Found ;("
+          },
+          "200": {
+            "description": "The Discount Seted ;)"
+          }
+        }
+      }
+    },
+    "/discount/{code}": {
+      "get": {
+        "tags": ["Discount"],
+        "summary": "Get One Discount Code",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "product": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The Product ID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Product Not Found ;("
+          },
+          "405": {
+            "description": "The Product Not Found ;("
+          },
+          "400": {
+            "description": "The Discount Is Max Used ;("
+          },
+          "200": {
+            "description": "U Can Use Code ;)"
+          }
+        }
+      }
+    },
+    "/discount/all": {
+      "put": {
+        "tags": ["Discount"],
+        "summary": "Set Discount Code To All",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "discount": 50
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "All Discounts Updated ;)"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Discount"],
+        "summary": "Delete All Discount Code",
+        "security": [{ "Authorization": [] }],
+        "responses": {
+          "200": {
+            "description": "All Discounts Deleted ;)"
+          }
+        }
+      }
+    },
+    "/notification": {
+      "post": {
+        "tags": ["Notification"],
+        "summary": "Sent Notification To Admin",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "message": "Hey Sam How Are U today ??",
+                  "adminID": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The AdminID Is Not Valid ;"
+          },
+          "201": {
+            "description": "The Notification Sent ;)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get All Notification",
+        "security": [{ "Authorization": [] }],
+        "responses": {
+          "404": {
+            "description": "There Is No Notification ;"
+          },
+
+          "200": {
+            "description": "You Will Get All Notifications In Response ;)"
+          }
+        }
+      }
+    },
+    "/notification/edit/{notificationID}": {
+      "put": {
+        "tags": ["Notification"],
+        "summary": "Edit Notification",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "message": "Hey Sam Are U Good today ??",
+                  "adminID": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "notificationID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !! Check notificationID or AdminID ;("
+          },
+          "200": {
+            "description": "The Notification Edited ;)"
+          }
+        }
+      }
+    },
+    "/notification/answer/{notificationID}": {
+      "post": {
+        "tags": ["Notification"],
+        "summary": "Answer Notification",
+        "security": [{ "Authorization": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "message": "Hey Sir, Yeah I am Ok tnx"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "notificationID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+
+        "responses": {
+          "409": {
+            "description": "The notificationID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Notification Not Found !"
+          },
+          "200": {
+            "description": "The Notification Answered ;)"
+          }
+        }
+      }
+    },
+    "/notification/remove/{notificationID}": {
+      "delete": {
+        "tags": ["Notification"],
+        "summary": "Delete One Notification",
+        "security": [{ "Authorization": [] }],
+        "parameters": [
+          {
+            "name": "notificationID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "There Is No Notification From This Admin, Empity !!"
+          },
+          "409": {
+            "description": "The notificationID Is Not Valid ;("
+          },
+          "200": {
+            "description": "The Notification Deleted ;)"
+          }
+        }
+      }
+    },
+    "/notification/seen/{notificationID}": {
+      "put": {
+        "tags": ["Notification"],
+        "summary": "seen Notification",
+        "security": [{ "Authorization": [] }],
+        "parameters": [
+          {
+            "name": "notificationID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Notification Not Found !!"
+          },
+          "409": {
+            "description": "The notificationID Is Not Valid ;("
+          },
+          "201": {
+            "description": "The Notification Was Seen ;)"
+          }
+        }
+      }
+    },
+    "/notification/count/{adminID}": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get Count OF Notification To Sent Admin",
+        "security": [{ "Authorization": [] }],
+        "parameters": [
+          {
+            "name": "adminID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Notification Not Found !!"
+          },
+
+          "200": {
+            "description": "You Will Get Count In Responses"
+          }
+        }
+      }
+    },
+    "/notification/all/{adminID}": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get All Notification To Sent Admin",
+        "security": [{ "Authorization": [] }],
+        "parameters": [
+          {
+            "name": "adminID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "There Is No Notification From This Admin, Empity !"
+          },
+          "409": {
+            "description": "The AdminID Is Not Valid ;("
+          },
+          "200": {
+            "description": "You Will Get Notifications In Responses"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Notification"],
+        "summary": "Delete All Notification To Sent Admin",
+        "security": [{ "Authorization": [] }],
+        "parameters": [
+          {
+            "name": "adminID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "There Is No Notification From This Admin, Empity !"
+          },
+          "409": {
+            "description": "The AdminID Is Not Valid ;("
+          },
+          "200": {
+            "description": "The Notifications Deleted ;)"
+          }
+        }
+      }
+    },
+    "/comment": {
+      "post": {
+        "tags": ["Comment"],
+        "summary": "Post Comment For Product",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "body": "this is best Product",
+                  "productID": "66408ef5986b06da2f8d2f07",
+                  "score": 5
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "The Product Not Found !!"
+          },
+          "409": {
+            "description": "The productID Is Not Valid !!"
+          },
+          "201": {
+            "description": "The Commnet Created ;)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Comment"],
+        "summary": "Get All Comment For Admin",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "There Is No Comment !!"
+          },
+          "200": {
+            "description": "You Will Get All Comments List"
+          }
+        }
+      }
+    },
+    "/comment/answer/{commentID}": {
+      "post": {
+        "tags": ["Comment"],
+        "summary": "Answer Comment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "body": "Thank U"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "commentID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Comment Not Found !!"
+          },
+          "409": {
+            "description": "The ID Is Not Valid !!"
+          },
+          "201": {
+            "description": "The Comment Answered ;)"
+          }
+        }
+      }
+    },
+    "/comment/accept/{commentID}": {
+      "put": {
+        "tags": ["Comment"],
+        "summary": "Accept Comment",
+        "parameters": [
+          {
+            "name": "commentID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Comment Not Found !!"
+          },
+          "409": {
+            "description": "The ID Is Not Valid !!"
+          },
+          "200": {
+            "description": "The Comment Accepted ;)"
+          }
+        }
+      }
+    },
+    "/comment/reject/{commentID}": {
+      "put": {
+        "tags": ["Comment"],
+        "summary": "Reject Comment",
+        "parameters": [
+          {
+            "name": "commentID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Comment Not Found !!"
+          },
+          "409": {
+            "description": "The ID Is Not Valid !!"
+          },
+          "200": {
+            "description": "The Comment Rejected ;)"
+          }
+        }
+      }
+    },
+    "/comment/{commentID}": {
+      "delete": {
+        "tags": ["Comment"],
+        "summary": "Delete Comment",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "commentID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Comment Not Found !!"
+          },
+          "409": {
+            "description": "The ID Is Not Valid !!"
+          },
+          "200": {
+            "description": "The Comment Deleted ;)"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Comment"],
+        "summary": "Edit Comment",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "commentID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Comment Not Found !!"
+          },
+          "409": {
+            "description": "The ID Is Not Valid !!"
+          },
+          "200": {
+            "description": "The Comment Edited ;)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Comment"],
+        "summary": "Get One Comment For Admin",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "commentID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Comment Not Found !!"
+          },
+          "409": {
+            "description": "The ID Is Not Valid !!"
+          },
+          "200": {
+            "description": "You Will Get Comment You Wanted => "
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth 🔐"],
+        "summary": "Register User",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "mhsn.bakhshi696@gmail.com",
+                  "password": "mohsen1780",
+                  "confirmPassword": "mohsen1780",
+                  "name": "mohsen",
+                  "username": "mhsn1780",
+                  "phone": "09........"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The User Registered SuccessFully :))"
+          },
+          "400": {
+            "description": "The User Already Registered With Email Or Usersname"
+          },
+          "403": {
+            "description": "The User Phone Was Banned"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth 🔐"],
+        "summary": "Login User With Otp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "phone": 9999999999
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP Code Sent ..."
+          },
+          "409": {
+            "description": "The User Not Registerd With This Phone Number"
+          },
+          "406": {
+            "description": "You Can Ony try 3 Times To Send Code, Wait 15Min For Try Agian !!"
+          }
+        }
+      }
+    },
+    "/auth/verifyOtp": {
+      "post": {
+        "tags": ["Auth 🔐"],
+        "summary": "Verify Otp Code ...",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "phone": 999999999999,
+                  "code": 12345
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "410": {
+            "description": "Code Is Expired !!"
+          },
+          "408": {
+            "description": "Code Is Max Used, Try Agian !!"
+          },
+          "409": {
+            "description": "Code Is Not Correct !!"
+          },
+          "200": {
+            "description": "Code Is Correct ;)"
+          }
+        }
+      }
+    },
+    "/auth/refresh-token": {
+      "post": {
+        "tags": ["Auth 🔐"],
+        "summary": "Refresh User AccessToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "refreshToken": "2f0d680e-4c9f-40ad-83c4-4b130a66cafd"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "There Is No RefreshToken!!"
+          },
+          "200": {
+            "description": "You Get New AccessToken In Response"
+          }
+        }
+      }
+    },
+    "/auth/forget-password": {
+      "post": {
+        "tags": ["Auth 🔐"],
+        "summary": "Generate Link For ResetPassword And Send To Email",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "mhsn.bakhshi696@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The ResetPassword Link Sent To mhsn.bakhshi696@gmail.com . Please Check Your EmailBox"
+          },
+          "404": {
+            "description": "There Is No User With This Email!! Check Email ...."
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "tags": ["Auth 🔐"],
+        "summary": "Change User Password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "token": "The Token You Receive In Your Email Box",
+                  "password": "Your New Password"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "The Time Is Expired Or There Is No Token With This User !!"
+          },
+          "409": {
+            "description": "The Token Time Is Expired Or There Is No Token That You Sent In DB !!"
+          },
+          "200": {
+            "description": "The Password Reseted SuccessFully ;)"
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "tags": ["User 🙎‍♂️"],
+        "summary": "Get All Users",
+        "security": [
+          {
+            "Authorization": [],
+            "isAdmin": []
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "User Registered Send You In Responses ;)"
+          },
+          "500": {
+            "description": "Server Error !!"
+          }
+        }
+      },
+      "put": {
+        "tags": ["User 🙎‍♂️"],
+        "summary": "Change User Info",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "mhsn.bakhshi696@gmail.com",
+                  "name": "mhsn bakhshi",
+                  "username": "mohsen_1780"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "The User Not Found !!"
+          },
+          "200": {
+            "description": "The User Updated ;)"
+          }
+        }
+      }
+    },
+    "/user/change-role": {
+      "put": {
+        "tags": ["User 🙎‍♂️"],
+        "summary": "Change User Role",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "userID": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "201": {
+            "description": "The Role Is Changed ;)"
+          }
+        }
+      }
+    },
+    "/user/ban/{userID}": {
+      "delete": {
+        "tags": ["User 🙎‍♂️"],
+        "summary": "Ban User",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The User Not Found!! Check ID..."
+          },
+          "200": {
+            "description": "The User Banned ;)"
+          }
+        }
+      }
+    },
+    "/user/remove/{userID}": {
+      "delete": {
+        "tags": ["User 🙎‍♂️"],
+        "summary": "Remove User",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The User Not Found!! Check ID..."
+          },
+          "200": {
+            "description": "The User Removed Succesfully ;)"
+          }
+        }
+      }
+    },
+    "/user/profile": {
+      "post": {
+        "tags": ["User 🙎‍♂️"],
+        "summary": "Upload Profile",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "form-data": {
+              "schema": {
+                "type": "file",
+                "example": {
+                  "profile": "choose image"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "No Uploading File !! Please Upload File ..."
+          },
+
+          "200": {
+            "description": "The Profile Uploaded ;)"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User 🙎‍♂️"],
+        "summary": "Delete User Profile",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "There Is No User From This ID !"
+          },
+          "400": {
+            "description": "You Have No Uploading File For Your Profile Yet !! Upload Frist!"
+          },
+
+          "200": {
+            "description": "The Profile Deleted ;)"
+          }
+        }
+      }
+    },
+    "/newsletter": {
+      "post": {
+        "tags": ["NewsLetter 📩"],
+        "summary": "Create Email User In NewsLetter",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "mhsn.bakhshi696@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The Email Created ;)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["NewsLetter 📩"],
+        "summary": "Get Email Of User In NewsLetter",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users List Will Send U In Response"
+          }
+        }
+      }
+    },
+    "/menu": {
+      "get": {
+        "tags": ["Menu"],
+        "summary": "Get Menus",
+        "responses": {
+          "200": {
+            "description": "Get All Menus In Responses ;)"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Menu"],
+        "summary": " Post Menus",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "شلوار",
+                  "href": "شلوار ها",
+                  "parent": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The Menu Created Successfully ;)"
+          },
+          "500": {
+            "description": "Server Error !!"
+          }
+        }
+      }
+    },
+    "/menu/{menuID}": {
+      "put": {
+        "tags": ["Menu"],
+        "summary": "Edit Menu",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "menuID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "لباس",
+                  "href": "لباس ها",
+                  "parent": "663656d8041d0ab21f9c3e7d"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The Menu Not Found !!"
+          },
+          "201": {
+            "description": "The Menu Edited Successfully ;)"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Menu"],
+        "summary": "Delete Menu",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "menuID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The Menu Not Found !!"
+          },
+          "200": {
+            "description": "The Menu Deleted Successfully ;)"
+          }
+        }
+      }
+    },
+    "/menu/all": {
+      "get": {
+        "tags": ["Menu"],
+        "summary": "Get All Menu For Admin",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The Menu Not Found !!"
+          },
+          "200": {
+            "description": "Send U All Menus In REsponses ;)"
+          }
+        }
+      }
+    },
+    "/category": {
+      "post": {
+        "tags": ["Category"],
+        "summary": " Post Category",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "شلوار",
+                  "href": "clothes"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The Category Created ;)"
+          },
+          "500": {
+            "description": "Server Error !!"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Category"],
+        "summary": " Get Category",
+        "responses": {
+          "200": {
+            "description": "You Will See Category List ;)"
+          },
+          "500": {
+            "description": "Server Error !!"
+          }
+        }
+      }
+    },
+    "/category/{categoryID}": {
+      "put": {
+        "tags": ["Category"],
+        "summary": "Edit Category",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "categoryID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "کالا ها",
+                  "href": "Products"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The Category Not Found !!"
+          },
+          "200": {
+            "description": "The Category Edited Successfully ;)"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Category"],
+        "summary": "Delete Category",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "categoryID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The Category Not Found !!"
+          },
+          "200": {
+            "description": "The Category Deleted ;) "
+          }
+        }
+      }
+    },
+    "/product": {
+      "post": {
+        "tags": ["Product"],
+        "summary": " Crerate Product",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "discount": 10,
+                  "href": "clothes",
+                  "categoryID": "664071fe0d06ff81ec589e96",
+                  "name": "لباس دخترانه",
+                  "description": "هر آنچه که نیاز دارید با بهترین قیمت از دیجی‌کال",
+                  "price": 10000,
+                  "status": "use available or unavailable"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The Product Created ;)"
+          },
+          "500": {
+            "description": "Server Error !!"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get All Product",
+        "responses": {
+          "200": {
+            "description": "You Will Get Products List =>"
+          },
+          "404": {
+            "description": "There Is No Product !!"
+          }
+        }
+      }
+    },
+    "/product/buy": {
+      "post": {
+        "tags": ["Product"],
+        "summary": "Buy Product",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "productID": "66408ef5986b06da2f8d2f07"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The Product Added In Basket ;)"
+          },
+          "409": {
+            "description": "The ProductID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Product Not Found ;("
+          }
+        }
+      }
+    },
+    "/product/remove-baske": {
+      "delete": {
+        "tags": ["Product"],
+        "summary": "Remove Product From Basket",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "productID": "66408ef5986b06da2f8d2f07"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The Product Deleted From Your Basket ;)"
+          },
+          "409": {
+            "description": "The ProductID Is Not Valid ;("
+          },
+          "404": {
+            "description": "The Product Not Found ;("
+          }
+        }
+      }
+    },
+    "/product/basket": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get UserBasket Info",
+        "responses": {
+          "400": {
+            "description": "The Basket Is Empity Yet ;("
+          },
+          "200": {
+            "description": "You Will Get UserBasket Info"
+          }
+        }
+      }
+    },
+    "/product/userBasket": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get UserBasket Info For Admin",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "userID": "66378fe1fe1bbc64d54f0aa0"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "You Will Get UserBasket Info"
+          },
+          "409": {
+            "description": "The UserID Is Not Valid ;("
+          },
+          "400": {
+            "description": "The User Basket Is Empity !! No Product Buyed;("
+          }
+        }
+      }
+    },
+    "/product/cover": {
+      "post": {
+        "tags": ["Product"],
+        "summary": "Upload Cover",
+        "responses": {
+          "404": {
+            "description": "Product Not Found!!"
+          },
+          "200": {
+            "description": "The Cover Uploaded ;)"
+          },
+          "409": {
+            "description": "No File Uploaded Yet!!"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Product"],
+        "summary": "Delete Cover",
+        "responses": {
+          "404": {
+            "description": "There Is No Product From This ID !!"
+          },
+          "200": {
+            "description": "The Cover Deleted ;)"
+          },
+          "400": {
+            "description": "You Have No Uploading File For Your Product Yet !! Upload Frist."
+          }
+        }
+      }
+    },
+    "/product/edit": {
+      "put": {
+        "tags": ["Product"],
+        "summary": "Edit Product Info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "discount": 10,
+                  "href": "clothes",
+                  "categoryID": "664071fe0d06ff81ec589e96",
+                  "name": "لباس دخترانه",
+                  "description": "هر آنچه که نیاز دارید با بهترین قیمت از دیجی‌کال",
+                  "price": 10000,
+                  "status": "use available or unavailable"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The Product Edited ;)"
+          },
+
+          "404": {
+            "description": "The Product Not Found Or This Product not For U Check ID !!"
+          }
+        }
+      }
+    },
+    "/product/saves": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get All Product That User Saved",
+        "responses": {
+          "404": {
+            "description": "There Is No Product Saved Yet ;("
+          },
+          "200": {
+            "description": "You Will Get Products That Saved"
+          }
+        }
+      }
+    },
+    "/product/save/{productID}": {
+      "post": {
+        "tags": ["Product"],
+        "summary": "Save Product",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The Product Not Found !!"
+          },
+          "200": {
+            "description": "The Product Saved ;)"
+          }
+        }
+      }
+    },
+    "/product/like/{productID}": {
+      "post": {
+        "tags": ["Product"],
+        "summary": "Like Product",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The Product Not Found !!"
+          },
+          "200": {
+            "description": "The Product Liked ;)"
+          }
+        }
+      }
+    },
+    "/product/unsave/{productID}": {
+      "delete": {
+        "tags": ["Product"],
+        "summary": "unSave Product",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The Product Not Found !!"
+          },
+          "200": {
+            "description": "The Product unSaved ;)"
+          }
+        }
+      }
+    },
+    "/product/dislike/{productID}": {
+      "delete": {
+        "tags": ["Product"],
+        "summary": "disLIke Product",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "The Product Not Found !!"
+          },
+          "200": {
+            "description": "The Product disliked ;)"
+          }
+        }
+      }
+    },
+    "/product/{productID}": {
+      "delete": {
+        "tags": ["Product"],
+        "summary": "Delete Product",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "There Is No Product From This ID !!"
+          },
+          "200": {
+            "description": "The Product Deleted ;)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get Info Of 1 Product",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "The ID Is Not Valid !!!"
+          },
+          "404": {
+            "description": "There Is No Product From This ID !!"
+          },
+          "200": {
+            "description": "You Will Get Product Info => isLike , isSaved, comment, product"
+          }
+        }
+      }
+    }
+  }
+}
