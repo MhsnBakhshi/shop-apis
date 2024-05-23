@@ -12,10 +12,7 @@ if (!envMode) {
 //* Connect To DB
 async function connectToDB() {
   try {
-    await mongoose.connect(`${process.env.MONGO_URL}`, {
-      authSource: "admin",
-      useNewUrlParser: true,
-    });
+    await mongoose.connect(`${process.env.MONGO_URL}`);
     console.log(
       `MongoDB Conneted Succesfully On Host:  ${mongoose.connection.host} `
     );
