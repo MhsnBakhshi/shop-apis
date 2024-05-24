@@ -44,7 +44,7 @@ exports.register = async (req, res, next) => {
       role: usersCount > 0 ? "USER" : "ADMIN",
     });
     const accessToken = jwt.sign({ userID: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "30day",
+      expiresIn: "15s",
     });
 
     const newUser = user.toObject();
