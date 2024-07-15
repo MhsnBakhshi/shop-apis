@@ -134,7 +134,7 @@ exports.verifyOtp = async (req, res, next) => {
       if (otp.uses > 3) {
         return errResponses(res, 408, "Code Is Max Used, Try Agian !!");
       }
-      if (otp.code !== code) {
+      if (otp.code !== +code) {
         return errResponses(res, 409, "Code Is Not Correct !!");
       }
 
